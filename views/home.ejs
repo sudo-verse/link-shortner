@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Link to external CSS -->
+    <link rel="stylesheet" href="/styles.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home Page</title>
+  </head>
+  <body>
+    <!-- Theme toggle icon button -->
+    <button id="theme-icon" class="theme-icon">☀️</button>
+
+    <h1>URL SHORTENER</h1>
+    <div class="container">
+      <!-- Form to submit original URL -->
+      <form method="POST" action="/url">
+        <label>Enter Your Original URL</label>
+        <input type="text" name="url" placeholder="https://example.com" />
+        <button type="submit">Generate</button>
+      </form>
+
+      <% if (locals.id) { %>
+      <!-- Display the shortened URL if available -->
+      <p>
+        Your shortened URL is:
+        <a
+          class="short-url"
+          href="http://localhost:9000/<%= id %>"
+          target="_blank"
+        >
+          http://localhost:9000/<%= id %>
+        </a>
+      </p>
+      <% } %> <% if (locals.urls) { %>
+      <!-- Display list of URLs and click counts -->
+      <table>
+        <thead>
+          <tr>
+            <th>S.No</th>
+            <th>Original URL</th>
+            <th>Short URL</th>
+            <th>Clicks</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% urls.forEach((url, index) => { %>
+          <tr>
+            <td><%= index + 1 %></td>
+            <td>
+              <a class="short-url" href="<%= url.url %>" target="_blank">
+                <%= url.url %>
+              </a>
+            </td>
+            <td>
+              <a
+                class="short-url"
+                href="http://localhost:9000/<%= url.shortenedUrl %>"
+                target="_blank"
+              >
+                <%= url.shortenedUrl %>
+              </a>
+            </td>
+            <td><%= url.visitHistory.length %></td>
+          </tr>
+          <% }) %>
+        </tbody>
+      </table>
+      <% } %>
+    </div>
+    <!-- Script to toggle dark mode -->
+    <script>
+      const themeIcon = document.getElementById("theme-icon");
+      const body = document.body;
+
+      themeIcon.addEventListener("click", () => {
+        body.classList.toggle("dark-mode");
+
+        if (body.classList.contains("dark-mode")) {
+          themeIcon.textContent = "🌙"; // Change to moon icon
+        } else {
+          themeIcon.textContent = "☀️"; // Change to sun icon
+        }
+      });
+    </script>
+  </body>
+</html>
